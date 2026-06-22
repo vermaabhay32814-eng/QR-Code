@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="container">
+    <h1>QR Code Generator</h1>
+    <p>Enter text or a URL to create a QR code.</p>
+
+    <label for="qrText" class="sr-only">Text or URL</label>
+    <input type="text" placeholder="Text or URL" id="qrText" aria-label="Text or URL">
+
+    <div id="imgBox" aria-live="polite">
+        <img src="" id="qrImage" alt="QR code" hidden>
+    </div>
+
+    <button type="button" id="generateButton">Generate QR Code</button>
+    <a href="https://www.youtube.com/channel/UCkjoHfkLEy7ZT4bA2myJ8xA?sub_confirmation=1" class="watch-link" target="_blank" rel="noopener noreferrer">Watch More Videos</a>
+</main>
+
+<script>
+const imgBox = document.getElementById('imgBox');
+const qrImage = document.getElementById('qrImage');
+const qrText = document.getElementById('qrText');
+const generateButton = document.getElementById('generateButton');
+
+function generateQR() {
+    const value = qrText.value.trim();
+
+    if (!value) {
+        qrText.classList.add('error');
+        setTimeout(() => qrText.classList.remove('error'), 800);
+        return;
+    }
+
+    const encodedValue = encodeURIComponent(value);
+    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodedValue}`;
+    qrImage.hidden = false;
+    imgBox.classList.add('show-img');
+}
+
+generateButton.addEventListener('click', generateQR);
+qrText.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+        generateQR();
+    }
+});
+</script>
+</body>
+</html>
